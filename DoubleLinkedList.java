@@ -1,172 +1,190 @@
-public class DoubleLinkedList<T> {
-	DNode<T> head;
-	DNode<T> tail;
-	
+public class DoubleLinkedList {
+
+	DNode head;
+	DNode tail;
+
+	/**
+	 * preciso aprender o basico de double linked
+	 */
 	public DoubleLinkedList() {
-		this.head = new DNode<T>();
-		this.tail = new DNode<T>();
+		this.head = new DNode();
+		this.tail = new DNode();
 	}
-	
+
 	public boolean isEmpty() {
-		return this.head.isNil();
+		return this.head.isNIL();
 	}
-	
-	public void insertFirst(T element) {
-		if(isEmpty()) {
-			head.setValue(element);
-			tail.setPrevious(head);
-			head.setNext(tail);
+
+	public void addLast(int element) {
+		addLast(this.head, element);
+	}
+
+	private void addLast(DNode node, int element) {
+
+		if (node.isNIL()) {
+			node.setData(element);
+			DNode auxNode = new DNode();
+			node.setNext(auxNode);
+			auxNode.setPrevious(node);
+			this.tail = auxNode;
 		} else {
-			DNode<T> newHead = new DNode<T>();
-			newHead.setValue(element);
-			DNode<T> aux = this.head;
-			newHead.setNext(aux);
-			aux.setPrevious(newHead);
-			this.head = newHead;
+			addLast(node.next, element);
 		}
 	}
-	public void insert(T element) {
-		if(isEmpty()) {
-			insertFirst(element);
-			
+
+	public boolean isSorted() {
+		if (isEmpty()) {
+			return true;
 		} else {
-			DNode<T> newTail = new DNode<T>();
-			DNode<T> aux = this.tail;
-			aux.setValue(element);
-			aux.setNext(newTail);
-			newTail.setPrevious(aux);
-			this.tail = newTail;
+			boolean resultadoAscendente = isSorted(this.head, false);
+			boolean resultadoDescendente = isSorted(this.head, true);
+
+			return (resultadoAscendente || resultadoDescendente);
 		}
 	}
-	
-	public void removeFirst() {
-		if(!isEmpty()) {
-			this.head = this.head.getNext();
-			this.head.setPrevious(new DNode<T>());
-		}
-	}
-	
-	public T remove(T element) {
-		T removed = null;
-		if(!isEmpty()) {
-			boolean remove = false;
-			DNode<T> aux = this.head;
-			
-			if(element.equals(aux.getValue())) {
-				removed = aux.getValue();
-				removeFirst();
-			} else {
-				aux = aux.getNext();
-				while(!aux.isNil() && !remove) {
-					if(aux.getValue().equals(element)) {
-						remove = true;
-						removed = aux.getValue();
-						DNode<T> auxR = aux.getNext();
-						auxR.setPrevious(aux.getPrevious());
-						aux.getPrevious().setNext(auxR);
+
+	// OBSERVAR BEM ESSA FUNCAO
+	private boolean isSorted(DNode node, boolean asc) {
+		if (!node.isNIL()) {
+			if (!node.getNext().isNIL()) {
+				if (asc) {
+					if (((int) head.getData()) >= ((int) head.getNext().getData()) && asc) {
+						return isSorted(node.getNext(), asc);
 					} else {
-						aux = aux.getNext();
+						return false;
+					}
+				} else {
+					if (((int) head.getData()) <= ((int) head.getNext().getData()) && !asc) {
+						return isSorted(node.getNext(), asc);
+					} else {
+						return false;
 					}
 				}
+
+			} else {
+				return true;
 			}
- 		}
-		
-		return removed;
-	}
-	
-	@Override
-	public String toString() {
-		String saida = "";
-		if(isEmpty()) {
-			saida += "Empty";
 		} else {
-			DNode<T> aux = this.head;
-			
-			while(!aux.isNil()) {
-				
-				if(aux.getPrevious() == null) {
-					saida += "Previous : empty";
-				} else {
-					saida += "Previous: " + aux.getPrevious().getValue();
-				}
-				saida += " <- " + aux.getValue() + " -> ";
-				if(aux.getNext() == null) {
-					saida += "Next: empty";
-				} else {
-					saida += "Next: " + aux.getNext().getValue();
-				}
-				saida += " | ";
-				aux = aux.getNext();
-			}
+			return true;
 		}
-		
-		return saida;
-	}
-	
-	public static void main(String[] args) {
-		DoubleLinkedList<Integer> dll = new DoubleLinkedList<Integer>();
-		dll.insert(4);
-		dll.insert(5);
-		dll.insert(9);
-		System.out.println(dll.toString());
-		dll.remove(5);
-		System.out.println(dll.toString());
-		dll.remove(4);
-		System.out.println(dll.toString());
-	}
-}
-
-class DNode<T> {
-	private T value;
-	private DNode<T> next;
-	private DNode<T> previous;
-	
-	public DNode(T value, DNode<T> next, DNode<T> previous) {
-		this.value = value;
-		this.setNext(next);
-		this.setPrevious(previous);
-	}
-	
-	public DNode() {}
-	
-	public boolean isNil() {
-		return this.value == null;
 	}
 
-	public DNode<T> getPrevious() {
-		return previous;
+	public int soma() {
+		return soma(this.head);
 	}
 
-	public void setPrevious(DNode<T> previous) {
-		this.previous = previous;
-	}
+	private int soma(DNode node) {
 
-	public DNode<T> getNext() {
-		return next;
-	}
-
-	public void setNext(DNode<T> next) {
-		this.next = next;
-	}
-	
-	public T getValue() {
-		return this.value;
-	}
-	
-	public void setValue(T value) {
-		this.value = value;
-	}
-	
-	@Override
-	public String toString() {
-		String saida = "";
-		if(this.isNil()) {
-			saida += "null";
+		if (node.isNIL()) {
+			return 0;
 		} else {
-			saida += this.value;
+			return node.next.getData() + soma(node.next);
 		}
-		
-		return saida;
+
 	}
-	
+
+	public int size() {
+		return size(this.head);
+	}
+
+	private int size(DNode node) {
+
+		if (node.isNIL()) {
+			return 0;
+		} else {
+			return 1 + size(node.getNext());
+		}
+
+	}
+
+	public void add(int elemento) { // preciso aprender como inserir com um indice
+		if (isEmpty()) {
+			this.head.setData(elemento);
+			this.tail.setPrevious(head);
+			this.head.setNext(tail);
+		}
+	}
+
+	// METODOS ITERATIVOS
+
+	public void add(int element, int index) {
+		DNode aux = this.head;
+		int i = index - 1;
+		while (i > 0) {
+			aux = aux.getNext();
+			i--;
+		}
+
+		DNode novo = new DNode();
+		novo.setData(element);
+		aux.setNext(novo);
+		novo.setNext(aux.getNext());
+		novo.setPrevious(aux);
+
+		if (!aux.getNext().isNIL()) {
+			aux.getNext().setPrevious(novo);
+		}
+	}
+
+	public void remove(int index) {
+		DNode aux = this.head;
+		int i = index;
+		while (i > 0) {
+			aux = aux.getNext();
+			i--;
+		}
+
+		DNode next = aux.getNext();
+		aux.getPrevious().setNext(next);
+		next.setPrevious(aux.getPrevious());
+	}
+
+	// CLASSE DNODE
+
+	class DNode {
+
+		private DNode next;
+		private DNode prev;
+		private int data;
+
+		public DNode() {
+		}
+
+		public DNode(int value, DNode next, DNode prev) {
+			this.next = next;
+			this.prev = prev;
+			this.data = value;
+		}
+
+		public boolean isNIL() {
+			return this.data == Integer.MAX_VALUE;
+
+		}
+
+		public void setData(int value) {
+			this.data = value;
+		}
+
+		public void setPrevious(DNode prev) {
+			this.prev = prev;
+		}
+
+		public DNode getPrevious() {
+			return this.prev;
+		}
+
+		public void setNext(DNode next) {
+			this.next = next;
+		}
+
+		public int getData() {
+			return this.data;
+		}
+
+		public DNode getNext() {
+			return this.next;
+		}
+
+	}
+
 }
