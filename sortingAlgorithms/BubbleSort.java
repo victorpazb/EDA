@@ -8,10 +8,6 @@ public class BubbleSort {
         this.array = array;
     }
 
-    public int[] getElement() {
-        return this.array;
-    }
-
     public void sortArray() {
 
         boolean arrayAlreadySorted = true;
