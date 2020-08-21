@@ -2,31 +2,40 @@ import java.util.Arrays;
 
 public class BubbleSort {
 
-    private int[] data;
+    private int[] array;
 
-    public BubbleSort(int[] data) {
-        this.data = data;
+    public BubbleSort(int[] array) {
+        this.array = array;
     }
 
     public int[] getElement() {
-        return this.data;
+        return this.array;
+    }
+
+    public void sortArray() {
+
+        boolean arrayAlreadySorted = true;
+        int loopsCount = 0;
+        for (int i = 0; i < this.array.length; i++) {
+
+            arrayAlreadySorted = true;
+            for (int j = 0; j < this.array.length - 1; j++) {
+                if (this.array[j] > this.array[j + 1]) {
+                    Util.swap(j, this.array);
+                    arrayAlreadySorted = false;
+                }
+
+                loopsCount += 1;
+            }
+            if (arrayAlreadySorted) {
+                break;
+            }
+            System.out.println(loopsCount);
+        }
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(this.data);
-    }
-
-    public void sortArray(int[] array) {
-        
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array.length - 1; j++) {
-                if (array[j] > array[j + 1]) {
-                    array = Util.swap(j, array);
-                }
-            }
-        }
-
-        this.data = array;
+        return Arrays.toString(this.array);
     }
 }
