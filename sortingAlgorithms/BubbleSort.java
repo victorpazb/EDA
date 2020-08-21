@@ -18,9 +18,7 @@ public class BubbleSort {
     }
 
     public void sortArray(int[] array) {
-
-
-        int AUX = array[0];
+        
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array.length - 1; j++) {
                 if (array[j] > array[j + 1]) {
@@ -30,7 +28,5 @@ public class BubbleSort {
         }
 
         this.data = array;
-
-
     }
 }
