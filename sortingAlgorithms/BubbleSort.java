@@ -17,7 +17,7 @@ public class BubbleSort {
         return Arrays.toString(this.data);
     }
 
-    public void sortedArray(int[] array) {
+    public void sortArray(int[] array) {
 
 
         int AUX = array[0];
