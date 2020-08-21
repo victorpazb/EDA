@@ -11,7 +11,6 @@ public class BubbleSort {
     public void sortArray() {
 
         boolean arrayAlreadySorted = true;
-        int loopsCount = 0;
         for (int i = 0; i < this.array.length; i++) {
 
             arrayAlreadySorted = true;
@@ -21,12 +20,10 @@ public class BubbleSort {
                     arrayAlreadySorted = false;
                 }
 
-                loopsCount += 1;
             }
             if (arrayAlreadySorted) {
                 break;
             }
-            System.out.println(loopsCount);
         }
     }
 
