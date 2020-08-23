@@ -10,21 +10,27 @@ public class BubbleSort {
 
     public void sortArray() {
 
-        boolean arrayAlreadySorted = true;
-        for (int i = 0; i < this.array.length; i++) {
+        boolean sorted = true;
+		for (int i = 0; i < array.length; i++) {
 
-            arrayAlreadySorted = true;
-            for (int j = 0; j < this.array.length - 1; j++) {
-                if (this.array[j] > this.array[j + 1]) {
-                    Util.swap(j, this.array);
-                    arrayAlreadySorted = false;
-                }
-
-            }
-            if (arrayAlreadySorted) {
-                break;
-            }
-        }
+			for (int j = 0; j < array.length - 1 - i; j++) {
+				if (array[j] > array[j + 1]) {
+					
+                    //SWAPPING
+                    int aux = array[j + 1];
+					array[j + 1] = array[j];
+					array[j] = aux;
+					
+                    //means that the array is not sorted yet
+                    sorted = false;
+				}
+			}
+			
+			if(sorted){
+				break;
+			}
+			ord = true;
+		}
     }
 
     @Override
